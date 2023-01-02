@@ -3,19 +3,24 @@ from django.db import models
 # Create your models here.
 
 class Category(models.Model):
-    c_name = models.CharField(max_length=50)
+    name = models.CharField(max_length=25, unique=True)
     
     def __str__(self):
-        return self.c_name
+        return self.name
     
-class Post(models.Model):
-    category_id=models.ForeignKey(Category, related_name="posts", on_delete=models.CASCADE)
-    title=models.CharField(max_length=50)
-    content=models.TextField()
-    status=models.BooleanField()
-    created_date=models.DateTimeField(auto_now_add=True)
-    updated_date=models.DateTimeField(auto_created=True)
+class Blog(models.Model):
+    # CHOICES =(
+    #     ('p', 'Published'),
+    #     ('d', 'Draft')
+    # )
+    title = models.CharField(max_length=100)
+    content = models.TextField(blank=True)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    is_published = models.BooleanField(default=False)
+    #status = models.BooleanField(default=False)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return (f'Title: {self.title} - id: {self.id}') 
+        return (f'Title: {self.title}') 
     
